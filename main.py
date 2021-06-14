@@ -9,6 +9,7 @@ class GameOfLife:
         pygame.display.set_caption("Game of Life")
         pygame.init()
         pygame.mixer.quit()
+        self.font = pygame.font.SysFont("Arial", 18)
         self.fps = 60
         self.pause = False
         self.screen_width = 600
@@ -139,8 +140,14 @@ class GameOfLife:
         self.alive_cells = iteration_alive_cells
         self.dead_cells = iteration_dead_cells
 
+    def update_fps(self):
+        fps = str(int(self.clock.get_fps()))
+        fps_text = self.font.render(fps, 1, pygame.Color("coral"))
+        return fps_text
+
     def render_screen(self):
         self.screen.fill((0, 0, 0))
+        self.screen.blit(self.update_fps(), (10, 0))
         for pos in self.alive_cells:
             self.screen.blit(self.cell_skin, pos)
 
