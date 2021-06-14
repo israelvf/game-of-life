@@ -71,14 +71,14 @@ class GameOfLife:
             if (xn != 0 and valid_xn) or (yn != 0 and valid_yn):
                 return (point[0] + xn, point[1] + yn)
 
-    def check_alive(self, position):
+    def check_alive(self, position, current_state):
         alive_neighbors = self.check_neighborhood(position)
-        if position in self.alive_cells and (alive_neighbors >= 2 and alive_neighbors <= 3):
-            return True
-        elif position in self.dead_cells and alive_neighbors == 3:
+        if alive_neighbors < 2 or alive_neighbors > 3:
+            return False
+        elif alive_neighbors == 3:
             return True
 
-        return False
+        return current_state
 
     def check_neighborhood(self, position, radius=1):
         alive_cells = 0
@@ -124,13 +124,13 @@ class GameOfLife:
         iteration_alive_cells = list()
         iteration_dead_cells = list()
         for cell in self.alive_cells:
-            still_alive = self.check_alive(cell)
+            still_alive = self.check_alive(cell, True)
             if still_alive:
                 iteration_alive_cells.append(cell)
             else:
                 iteration_dead_cells.append(cell)
         for cell in self.dead_cells:
-            still_dead = not self.check_alive(cell)
+            still_dead = not self.check_alive(cell, False)
             if still_dead:
                 iteration_dead_cells.append(cell)
             else:
